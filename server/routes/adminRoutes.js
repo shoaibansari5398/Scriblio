@@ -8,8 +8,8 @@ adminRouter.post("/login", adminLogin);
 adminRouter.get("/dashboard",auth, getDashboard);
 adminRouter.get("/blogs",auth, getAllBlogsAdmin);
 adminRouter.get("/comments",auth, getAllCommentsAdmin);
-adminRouter.delete("/delete-comment",auth, deleteCommenById);
-adminRouter.put("/approve-comment",auth, approvedCommentById);
+adminRouter.post("/delete-comment",auth, deleteCommenById);
+adminRouter.post("/approve-comment",auth, approvedCommentById);
 
 
 export default adminRouter;

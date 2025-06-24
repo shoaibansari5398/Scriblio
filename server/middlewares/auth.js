@@ -6,7 +6,6 @@ const auth = (req, res, next) => {
 		jwt.verify(token, process.env.JWT_SECRET);
 		next();
 	} catch (error) {
-		console.log(error);
 		res.status(500).json({ message: error.message });
 	}
 };

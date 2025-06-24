@@ -6,11 +6,11 @@ import auth from "../middlewares/auth.js";
 const blogRouter = express.Router();
 
 blogRouter.post("/add", upload.single("image"), auth, addBlog);
-blogRouter.delete("/delete", auth, deleteBlogById);
+blogRouter.post("/delete", auth, deleteBlogById);
 blogRouter.post("/toggle-publish", auth, togglePublish);
 blogRouter.get("/all", getAllBlogs);
 blogRouter.get("/:blogId", getBlogById);
-blogRouter.post("/add-comment", auth, addComment);
+blogRouter.post("/add-comment", addComment);
 blogRouter.post("/comments", getBlogComments);
 
 

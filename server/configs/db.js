@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import Blog from "../models/blog.js";
+import Comment from "../models/Comment.js";
 
 const connectDB = async () => {
 	try {

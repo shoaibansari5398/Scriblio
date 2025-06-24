@@ -4,6 +4,8 @@ import "dotenv/config";
 import connectDB from "./configs/db.js";
 import adminRouter from "./routes/adminRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
+import Blog from "./models/blog.js";
+import Comment from "./models/Comment.js";
 
 const app = express();
 

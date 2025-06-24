@@ -8,7 +8,7 @@ export const adminLogin = (req, res) => {
 		if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) {
 			return res.status(401).json({ message: "Unauthorized" });
 		}
-		const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
+		const token = jwt.sign({ email }, process.env.JWT_SECRET);
 		res.status(200).json({ message: "Admin logged in successfully", token });
 	} catch (error) {
 		console.log(error);
