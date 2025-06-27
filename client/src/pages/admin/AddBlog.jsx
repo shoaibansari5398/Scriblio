@@ -3,11 +3,14 @@ import { assets, blogCategories } from "../../assets/assets";
 import Quill from "quill";
 import { useAppContext } from "../../context/AppContext";
 import { toast } from "react-hot-toast";
+import { parse } from "marked";
+
 
 const AddBlog = () => {
 	const { axios } = useAppContext();
 
 	const [isAdding, setIsAdding] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const [image, setImage] = useState(false);
 	const [title, setTitle] = useState("");
@@ -36,7 +39,8 @@ const AddBlog = () => {
 			formData.append("image", image);
 
 			const { data } = await axios.post("/api/blog/add", formData);
-			if(data.success){
+			if (data) {
+				console.log("Blog added successfully");
 				toast.success(data.message);
 				setTitle("");
 				setSubTitle("");
@@ -44,7 +48,8 @@ const AddBlog = () => {
 				setImage(false);
 				quillRef.current.root.innerHTML = "";
 			}
-			else{
+			else {
+				console.log("Blog added failed");
 				toast.error(data.message);
 			}
 		} catch (error) {
@@ -55,8 +60,22 @@ const AddBlog = () => {
 		}
 	};
 
-	const generateContent = () => {
-		console.log("generateContent");
+	const generateContent = async () => {
+		try {
+			const { data } = await axios.post("/api/blog/generate", {
+				title,
+			});
+			if (data.success) {
+				toast.success(data.message);
+				quillRef.current.root.innerHTML = parse(data.content);
+			} else {
+				toast.error(data.message);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	useEffect(() => {
@@ -115,7 +134,17 @@ const AddBlog = () => {
 				<p className="mt-4">Blog Description</p>
 				<div className="max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative">
 					<div ref={editorRef} />
+					{
+						loading && (
+							<div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black/10 mt-2">
+								<div className="w-8 h-8 border-2 border-t-white rounded-full animate-spin">
+
+								</div>
+						</div>
+					)
+					}
 					<button
+						disabled={loading}
 						type="button"
 						onClick={generateContent}
 						className="absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer"
